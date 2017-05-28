@@ -6,6 +6,7 @@
     android:id="@+id/root_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="zero.zd.daily_event_logger.MainActivity"
     tools:showIn="@layout/activity_main">
