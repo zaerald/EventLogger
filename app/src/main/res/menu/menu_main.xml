@@ -3,8 +3,9 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="zero.zd.daily_event_logger.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        android:id="@+id/action_about"
+        android:icon="@drawable/ic_action_about"
+        android:orderInCategory="1"
+        android:title="@string/action_about"
+        app:showAsAction="always"/>
 </menu>
