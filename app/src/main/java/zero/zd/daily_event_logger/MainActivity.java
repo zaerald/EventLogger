@@ -8,14 +8,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        List<Event> eventList = new ArrayList<>();
+        Event e = new Event("Z", new Date());
+        eventList.add(e);
+
+        ListView listView = (ListView) findViewById(R.id.list_event);
+        ArrayAdapter<Event> adapter = new EventArrayAdapter(this, R.layout.item_event, eventList);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -52,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class EventArrayAdapater extends ArrayAdapter<Event> {
+    private class EventArrayAdapter extends ArrayAdapter<Event> {
 
         private Context mContext;
         private int mResource;
         private List<Event> mEventList;
 
-        public EventArrayAdapater(Context context, int resource, List<Event> eventList) {
+        private EventArrayAdapter(Context context, int resource, List<Event> eventList) {
             super(context, resource, eventList);
             mContext = context;
             mResource = resource;
@@ -84,13 +96,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater)
-                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(mResource, parent, false);
 
                 viewHolder = new ViewHolder();
-                viewHolder.eventTextView = (TextView) findViewById(R.id.text_event);
-                viewHolder.dateTextView = (TextView) findViewById(R.id.text_date);
+                viewHolder.eventTextView = (TextView) convertView.findViewById(R.id.text_event);
+                viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.text_date);
 
+                Log.d("ZD", "yeah");
                 convertView.setTag(viewHolder);
             } else viewHolder = (ViewHolder) convertView.getTag();
 
@@ -103,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class ViewHolder {
+    private static class ViewHolder {
         private TextView eventTextView;
         private TextView dateTextView;
     }
