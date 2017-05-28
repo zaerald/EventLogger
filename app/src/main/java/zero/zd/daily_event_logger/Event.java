@@ -7,6 +7,11 @@ public class Event {
     private String mEvent;
     private Date mDate;
 
+    public Event(String event, Date date) {
+        mEvent = event;
+        mDate = date;
+    }
+
     public String getEvent() {
         return mEvent;
     }
