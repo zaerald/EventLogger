@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Daily Event Logger</string>
     <string name="action_about">About</string>
+
+    <!-- START: Create Event -->
+    <string name="title_event">Create Event</string>
+    <string name="hint_event_today">Today\'s Event</string>
+    <string name="msg_time">Time:</string>
+    <string name="action_discard">Discard</string>
+    <string name="action_save">Save</string>
+
 </resources>

@@ -1,28 +1,34 @@
 package zero.zd.daily_event_logger;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private List<Event> mEventList;
+    ArrayAdapter<Event> mEventArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +41,15 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showCreateEventDialog();
             }
         });
 
-        List<Event> eventList = new ArrayList<>();
-        Event e = new Event("Z", new Date());
-        eventList.add(e);
+        mEventList = new ArrayList<>();
 
         ListView listView = (ListView) findViewById(R.id.list_event);
-        ArrayAdapter<Event> adapter = new EventArrayAdapter(this, R.layout.item_event, eventList);
-        listView.setAdapter(adapter);
+        mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
+        listView.setAdapter(mEventArrayAdapter);
     }
 
     @Override
@@ -57,11 +60,50 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_about:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showCreateEventDialog() {
+        ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
+        final View dialogView = getLayoutInflater()
+                .inflate(R.layout.dialog_create_event, dialogRootView);
+        final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
+
+        AlertDialog createEventDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.title_event)
+                .setView(dialogView)
+                .setCancelable(false)
+                .setNegativeButton(R.string.action_discard, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String eventText = eventEditText.getText().toString();
+                        eventText = eventText.substring(0, 1).toUpperCase() + eventText.substring(1);
+                        addEvent(new Event(eventText, new Date()));
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        createEventDialog.show();
+    }
+
+    private void addEvent(Event event) {
+        mEventList.add(event);
+        mEventArrayAdapter.notifyDataSetChanged();
+    }
+
+    private static class ViewHolder {
+        private TextView eventTextView;
+        private TextView dateTextView;
     }
 
     private class EventArrayAdapter extends ArrayAdapter<Event> {
@@ -114,10 +156,5 @@ public class MainActivity extends AppCompatActivity {
 
             return convertView;
         }
-    }
-
-    private static class ViewHolder {
-        private TextView eventTextView;
-        private TextView dateTextView;
     }
 }
