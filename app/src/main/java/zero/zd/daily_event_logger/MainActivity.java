@@ -27,6 +27,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private List<Event> mEventList;
+    ArrayAdapter<Event> mEventArrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +45,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        List<Event> eventList = new ArrayList<>();
-        Event e = new Event("Z", new Date());
-        eventList.add(e);
+        mEventList = new ArrayList<>();
 
         ListView listView = (ListView) findViewById(R.id.list_event);
-        ArrayAdapter<Event> adapter = new EventArrayAdapter(this, R.layout.item_event, eventList);
-        listView.setAdapter(adapter);
+        mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
+        listView.setAdapter(mEventArrayAdapter);
     }
 
     @Override
@@ -85,13 +86,19 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String test = eventEditText.getText().toString();
-                        Toast.makeText(MainActivity.this, "TEXT: " + test, Toast.LENGTH_SHORT).show();
+                        String eventText = eventEditText.getText().toString();
+                        eventText = eventText.substring(0, 1).toUpperCase() + eventText.substring(1);
+                        addEvent(new Event(eventText, new Date()));
                         dialog.dismiss();
                     }
                 })
                 .create();
         createEventDialog.show();
+    }
+
+    private void addEvent(Event event) {
+        mEventList.add(event);
+        mEventArrayAdapter.notifyDataSetChanged();
     }
 
     private static class ViewHolder {
