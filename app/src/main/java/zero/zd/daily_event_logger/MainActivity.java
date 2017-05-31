@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,8 +26,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<Event> mEventList;
     ArrayAdapter<Event> mEventArrayAdapter;
+    private List<Event> mEventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCreateEventDialog();
-            }
-        });
-
-        mEventList = new ArrayList<>();
-
-        ListView listView = (ListView) findViewById(R.id.list_event);
-        mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
-        listView.setAdapter(mEventArrayAdapter);
+        initObjects();
     }
 
     @Override
@@ -65,6 +52,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initObjects() {
+        mEventList = new ArrayList<>();
+
+        ListView listView = (ListView) findViewById(R.id.list_event);
+        mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
+        listView.setAdapter(mEventArrayAdapter);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCreateEventDialog();
+            }
+        });
     }
 
     private void showCreateEventDialog() {
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String eventText = eventEditText.getText().toString();
-                        eventText = eventText.substring(0, 1).toUpperCase() + eventText.substring(1);
+                        eventText = formatText(eventText);
                         addEvent(new Event(eventText, new Date()));
                         dialog.dismiss();
                     }
@@ -99,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
     private void addEvent(Event event) {
         mEventList.add(event);
         mEventArrayAdapter.notifyDataSetChanged();
+    }
+
+    private String formatText(String s) {
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
     private static class ViewHolder {
@@ -145,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 viewHolder.eventTextView = (TextView) convertView.findViewById(R.id.text_event);
                 viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.text_date);
 
-                Log.d("ZD", "yeah");
                 convertView.setTag(viewHolder);
             } else viewHolder = (ViewHolder) convertView.getTag();
 
