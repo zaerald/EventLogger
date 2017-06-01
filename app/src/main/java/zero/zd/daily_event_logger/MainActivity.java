@@ -68,18 +68,18 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCreateEventDialog();
+                showEventDialog();
             }
         });
     }
 
-    private void showCreateEventDialog() {
+    private void showEventDialog() {
         ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
         final View dialogView = getLayoutInflater()
-                .inflate(R.layout.dialog_create_event, dialogRootView);
+                .inflate(R.layout.dialog_event, dialogRootView);
         final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
 
-        AlertDialog createEventDialog = new AlertDialog.Builder(this)
+        AlertDialog eventDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.title_event)
                 .setView(dialogView)
                 .setCancelable(false)
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .create();
-        createEventDialog.show();
+        eventDialog.show();
     }
 
     private void addEvent(Event event) {
