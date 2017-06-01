@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private void initObjects() {
         mEventList = new ArrayList<>();
         mEventDbManager = new EventDbManager(this);
+
         mEventDbManager.open();
+        mEventList = mEventDbManager.getEventList();
 
         ListView listView = (ListView) findViewById(R.id.list_event);
         mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
