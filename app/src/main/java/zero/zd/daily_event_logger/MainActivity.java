@@ -1,16 +1,11 @@
 package zero.zd.daily_event_logger;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,11 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import zero.zd.daily_event_logger.adapter.EventArrayAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,61 +102,5 @@ public class MainActivity extends AppCompatActivity {
 
     private String formatText(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
-
-    private static class ViewHolder {
-        private TextView eventTextView;
-        private TextView dateTextView;
-    }
-
-    private class EventArrayAdapter extends ArrayAdapter<Event> {
-
-        private Context mContext;
-        private int mResource;
-        private List<Event> mEventList;
-
-        private EventArrayAdapter(Context context, int resource, List<Event> eventList) {
-            super(context, resource, eventList);
-            mContext = context;
-            mResource = resource;
-            mEventList = eventList;
-        }
-
-        @Override
-        public int getCount() {
-            return mEventList.size();
-        }
-
-        @Nullable
-        @Override
-        public Event getItem(int position) {
-            return mEventList.get(position);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-            ViewHolder viewHolder;
-
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater)
-                        mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(mResource, parent, false);
-
-                viewHolder = new ViewHolder();
-                viewHolder.eventTextView = (TextView) convertView.findViewById(R.id.text_event);
-                viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.text_date);
-
-                convertView.setTag(viewHolder);
-            } else viewHolder = (ViewHolder) convertView.getTag();
-
-            Event event = mEventList.get(position);
-
-            viewHolder.eventTextView.setText(event.getEvent());
-            viewHolder.dateTextView.setText(event.getDate().toString());
-
-            return convertView;
-        }
     }
 }
