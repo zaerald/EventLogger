@@ -6,6 +6,7 @@
     <string name="title_event">Create Event</string>
     <string name="hint_event_today">Today\'s Event</string>
     <string name="msg_time">Time:</string>
+    <string name="err_input_event">Please input Event</string>
     <string name="action_discard">Discard</string>
     <string name="action_save">Save</string>
 

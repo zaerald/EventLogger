@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,9 +87,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String eventText = eventEditText.getText().toString();
-                        eventText = formatText(eventText);
-                        addEvent(new Event(eventText, new Date()));
-                        dialog.dismiss();
+                        if (eventText.isEmpty()) {
+                            Toast.makeText(MainActivity.this, R.string.err_input_event,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            eventText = formatText(eventText);
+                            addEvent(new Event(eventText, new Date()));
+                            dialog.dismiss();
+                        }
                     }
                 })
                 .create();
