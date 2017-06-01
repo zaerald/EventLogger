@@ -20,11 +20,13 @@ import java.util.Date;
 import java.util.List;
 
 import zero.zd.daily_event_logger.adapter.EventArrayAdapter;
+import zero.zd.daily_event_logger.database.EventDbManager;
 
 public class MainActivity extends AppCompatActivity {
 
     ArrayAdapter<Event> mEventArrayAdapter;
     private List<Event> mEventList;
+    private EventDbManager mEventDbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initObjects() {
         mEventList = new ArrayList<>();
+        mEventDbManager = new EventDbManager(this);
+        mEventDbManager.open();
 
         ListView listView = (ListView) findViewById(R.id.list_event);
         mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addEvent(Event event) {
         mEventList.add(event);
+        mEventDbManager.addEvent(event);
         mEventArrayAdapter.notifyDataSetChanged();
     }
 
