@@ -10,7 +10,11 @@ public class Event {
     private Date mDate;
 
     public Event(String event, Date date) {
-        mId = UUID.randomUUID();
+        this(event, date, UUID.randomUUID());
+    }
+
+    public Event(String event, Date date, UUID uuid) {
+        mId = uuid;
         mEvent = event;
         mDate = date;
     }

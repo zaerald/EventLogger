@@ -65,6 +65,7 @@ public class EventDbManager {
 
     private ContentValues getContentValues(Event event) {
         ContentValues values = new ContentValues();
+        values.put(EventTable.Cols.UUID, event.getId().toString());
         values.put(EventTable.Cols.EVENT, event.getEvent());
         values.put(EventTable.Cols.DATE, event.getDate().getTime());
 
