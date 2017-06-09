@@ -1,6 +1,8 @@
 package zero.zd.daily_event_logger;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Event {
@@ -33,6 +35,11 @@ public class Event {
 
     public Date getDate() {
         return mDate;
+    }
+
+    public String getStringDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yy  k:m", Locale.ENGLISH);
+        return simpleDateFormat.format(mDate);
     }
 
     public void setDate(Date date) {

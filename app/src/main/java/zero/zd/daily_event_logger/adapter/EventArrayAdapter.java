@@ -59,7 +59,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         Event event = mEventList.get(position);
 
         viewHolder.eventTextView.setText(event.getEvent());
-        viewHolder.dateTextView.setText(event.getDate().toString());
+        viewHolder.dateTextView.setText(event.getStringDate());
 
         return convertView;
     }
