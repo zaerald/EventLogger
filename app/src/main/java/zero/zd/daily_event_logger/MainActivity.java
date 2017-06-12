@@ -3,6 +3,7 @@ package zero.zd.daily_event_logger;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,11 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +29,8 @@ import zero.zd.daily_event_logger.adapter.EventArrayAdapter;
 import zero.zd.daily_event_logger.database.EventDbManager;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String FRAG_TAG_TIME_PICKER = "FRAG_TAG_TIME_PICKER";
 
     ArrayAdapter<Event> mEventArrayAdapter;
     private List<Event> mEventList;
@@ -74,10 +82,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showEventDialog() {
+        final Event event = new Event();
+
         ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
         final View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_event, dialogRootView);
         final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
+        Button timeButton = (Button) dialogView.findViewById(R.id.button_time);
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(view, event);
+            }
+        });
+        timeButton.setText(event.getStringDate());
 
         AlertDialog eventDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.title_event)
@@ -98,13 +116,46 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             eventText = formatText(eventText);
-                            addEvent(new Event(eventText, new Date()));
+                            event.setEvent(eventText);
+                            addEvent(event);
                             dialog.dismiss();
                         }
                     }
                 })
                 .create();
         eventDialog.show();
+    }
+
+    private void showTimePickerDialog(View view, final Event event) {
+        final Button timeButton = (Button) view;
+        RadialTimePickerDialogFragment timePickerDialog = new RadialTimePickerDialogFragment()
+                .setOnTimeSetListener(new RadialTimePickerDialogFragment.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(RadialTimePickerDialogFragment dialog,
+                                          int hourOfDay, int minute) {
+                        event.setDate(getDateFromTime(hourOfDay, minute));
+                        timeButton.setText(event.getStringDate());
+                    }
+                })
+                .setStartTime(getCurrentHour(), getCurrentMinute())
+                .setDoneText("Save")
+                .setCancelText("Discard");
+        timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
+    }
+
+    private Date getDateFromTime(int hourOfDay, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        return calendar.getTime();
+    }
+
+    private int getCurrentHour() {
+        return Calendar.getInstance().get(Calendar.HOUR);
+    }
+
+    private int getCurrentMinute() {
+        return Calendar.getInstance().get(Calendar.MINUTE);
     }
 
     private void addEvent(Event event) {

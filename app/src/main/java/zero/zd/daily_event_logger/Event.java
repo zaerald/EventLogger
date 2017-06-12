@@ -1,6 +1,8 @@
 package zero.zd.daily_event_logger;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Event {
@@ -8,6 +10,10 @@ public class Event {
     private UUID mId;
     private String mEvent;
     private Date mDate;
+
+    public Event() {
+        this("", new Date());
+    }
 
     public Event(String event, Date date) {
         this(event, date, UUID.randomUUID());
@@ -33,6 +39,11 @@ public class Event {
 
     public Date getDate() {
         return mDate;
+    }
+
+    public String getStringDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a  E, MMMM dd, yy", Locale.ENGLISH);
+        return simpleDateFormat.format(mDate);
     }
 
     public void setDate(Date date) {
