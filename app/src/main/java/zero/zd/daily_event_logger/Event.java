@@ -38,7 +38,7 @@ public class Event {
     }
 
     public String getStringDate() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yy  k:m", Locale.ENGLISH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a  E, MMMM dd, yy", Locale.ENGLISH);
         return simpleDateFormat.format(mDate);
     }
 
