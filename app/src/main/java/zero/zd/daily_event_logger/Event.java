@@ -11,6 +11,10 @@ public class Event {
     private String mEvent;
     private Date mDate;
 
+    public Event() {
+        this("", new Date());
+    }
+
     public Event(String event, Date date) {
         this(event, date, UUID.randomUUID());
     }
