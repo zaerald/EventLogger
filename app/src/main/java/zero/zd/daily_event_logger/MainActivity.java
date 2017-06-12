@@ -11,8 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -78,6 +80,16 @@ public class MainActivity extends AppCompatActivity {
         final View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_event, dialogRootView);
         final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
+        Button timeButton = (Button) dialogView.findViewById(R.id.button_time);
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog();
+            }
+        });
+
+        final Event event = new Event("", new Date());
+        timeButton.setText(event.getStringDate());
 
         AlertDialog eventDialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.title_event)
@@ -98,13 +110,18 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             eventText = formatText(eventText);
-                            addEvent(new Event(eventText, new Date()));
+                            event.setEvent(eventText);
+                            addEvent(event);
                             dialog.dismiss();
                         }
                     }
                 })
                 .create();
         eventDialog.show();
+    }
+
+    private void showTimePickerDialog() {
+        Toast.makeText(this, "Dialog Show", Toast.LENGTH_SHORT).show();
     }
 
     private void addEvent(Event event) {
