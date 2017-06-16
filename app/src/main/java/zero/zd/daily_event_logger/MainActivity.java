@@ -22,6 +22,8 @@ import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFra
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         initObjects();
+        updateListView();
     }
 
     @Override
@@ -77,6 +80,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showEventDialog();
+            }
+        });
+    }
+
+    private void updateListView() {
+        sortEvents();
+        mEventArrayAdapter.notifyDataSetChanged();
+    }
+
+    private void sortEvents() {
+        Collections.sort(mEventList, new Comparator<Event>() {
+            @Override
+            public int compare(Event o1, Event o2) {
+                return o1.getDate().compareTo(o2.getDate());
             }
         });
     }
@@ -161,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
     private void addEvent(Event event) {
         mEventList.add(event);
         mEventDbManager.addEvent(event);
-        mEventArrayAdapter.notifyDataSetChanged();
+
+        updateListView();
     }
 
     private String formatText(String s) {
