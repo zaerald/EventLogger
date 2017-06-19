@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int getCurrentHour() {
-        return Calendar.getInstance().get(Calendar.HOUR);
+        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
     }
 
     private int getCurrentMinute() {
