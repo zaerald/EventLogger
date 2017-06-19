@@ -3,7 +3,6 @@ package zero.zd.daily_event_logger;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
@@ -59,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_about:
+                showInfoDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -96,6 +95,19 @@ public class MainActivity extends AppCompatActivity {
                 return o1.getDate().compareTo(o2.getDate());
             }
         });
+    }
+
+    private void showInfoDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.title_info)
+                .setMessage(R.string.msg_info)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void showEventDialog() {
