@@ -20,10 +20,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
     private int mResource;
     private List<Event> mEventList;
 
-    public EventArrayAdapter(Context context, int resource, List<Event> eventList) {
-        super(context, resource, eventList);
+    public EventArrayAdapter(Context context, List<Event> eventList) {
+        super(context, R.layout.item_event, eventList);
         mContext = context;
-        mResource = resource;
+        mResource = R.layout.item_event;
         mEventList = eventList;
     }
 

@@ -1,6 +1,6 @@
 package zero.zd.daily_event_logger.database;
 
-public class EventDbSchema {
+class EventDbSchema {
 
     public static final class EventTable {
         public static final String NAME = "tbl_event";

@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Pack200;
 
 import zero.zd.daily_event_logger.Event;
 import zero.zd.daily_event_logger.database.EventDbSchema.EventTable;
@@ -54,13 +53,29 @@ public class EventDbManager {
             cursor.close();
             cursorWrapper.close();
         }
-        
+
         return eventList;
     }
 
     public void addEvent(Event event) {
         ContentValues values = getContentValues(event);
         mDatabase.insert(EventTable.NAME, null, values);
+    }
+
+    public void updateEvent(Event event) {
+        ContentValues values = getContentValues(event);
+        mDatabase.update(EventTable.NAME,
+                values,
+                "uuid = ?",
+                new String[]{event.getId().toString()}
+        );
+    }
+
+    public void deleteEvent(Event event) {
+        mDatabase.delete(EventTable.NAME,
+                "uuid = ?",
+                new String[]{event.getId().toString()}
+        );
     }
 
     private ContentValues getContentValues(Event event) {
