@@ -63,6 +63,15 @@ public class EventDbManager {
         mDatabase.insert(EventTable.NAME, null, values);
     }
 
+    public void updateEvent(Event event) {
+        ContentValues values = getContentValues(event);
+        mDatabase.update(EventTable.NAME,
+                values,
+                "uuid = ?",
+                new String[] {event.getId().toString()}
+        );
+    }
+
     private ContentValues getContentValues(Event event) {
         ContentValues values = new ContentValues();
         values.put(EventTable.Cols.UUID, event.getId().toString());

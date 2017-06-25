@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_event);
         mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
         listView.setAdapter(mEventArrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showModifyDialog(mEventList.get(position));
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +162,52 @@ public class MainActivity extends AppCompatActivity {
         eventDialog.show();
     }
 
+    private void showModifyDialog(final Event event) {
+
+        ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
+        final View dialogView = getLayoutInflater()
+                .inflate(R.layout.dialog_event, dialogRootView);
+        final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
+        eventEditText.setText(event.getEvent());
+
+        Button timeButton = (Button) dialogView.findViewById(R.id.button_time);
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(view, event);
+            }
+        });
+        timeButton.setText(event.getStringDate());
+
+        AlertDialog eventDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.title_event)
+                .setView(dialogView)
+                .setCancelable(false)
+                .setNegativeButton(R.string.action_discard, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String eventText = eventEditText.getText().toString();
+                        if (eventText.isEmpty()) {
+                            Toast.makeText(MainActivity.this, R.string.err_input_event,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            eventText = formatText(eventText);
+                            event.setEvent(eventText);
+                            updateEvent(event);
+                            dialog.dismiss();
+                        }
+                    }
+                })
+                .create();
+        eventDialog.show();
+    }
+
     private void showTimePickerDialog(View view, final Event event) {
         final Button timeButton = (Button) view;
         RadialTimePickerDialogFragment timePickerDialog = new RadialTimePickerDialogFragment()
@@ -191,6 +244,11 @@ public class MainActivity extends AppCompatActivity {
         mEventList.add(event);
         mEventDbManager.addEvent(event);
 
+        updateListView();
+    }
+
+    private void updateEvent(Event event) {
+        mEventDbManager.updateEvent(event);
         updateListView();
     }
 
