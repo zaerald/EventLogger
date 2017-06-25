@@ -12,11 +12,7 @@ public class Event {
     private Date mDate;
 
     public Event() {
-        this("", new Date());
-    }
-
-    public Event(String event, Date date) {
-        this(event, date, UUID.randomUUID());
+        this("", new Date(), UUID.randomUUID());
     }
 
     public Event(String event, Date date, UUID uuid) {

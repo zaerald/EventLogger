@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import zero.zd.daily_event_logger.database.EventDbSchema.EventTable;
 
-public class EventSQLiteOpenHelper extends SQLiteOpenHelper {
+class EventSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "event.db";
 

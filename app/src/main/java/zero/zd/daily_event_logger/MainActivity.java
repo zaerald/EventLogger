@@ -32,6 +32,8 @@ import zero.zd.daily_event_logger.database.EventDbManager;
 public class MainActivity extends AppCompatActivity {
 
     private static final String FRAG_TAG_TIME_PICKER = "FRAG_TAG_TIME_PICKER";
+    private static final int STATE_ADD_EVENT = 0;
+    private static final int STATE_MODIFY_EVENT = 1;
 
     ArrayAdapter<Event> mEventArrayAdapter;
     private List<Event> mEventList;
@@ -72,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
         mEventList = mEventDbManager.getEventList();
 
         ListView listView = (ListView) findViewById(R.id.list_event);
-        mEventArrayAdapter = new EventArrayAdapter(this, R.layout.item_event, mEventList);
+        mEventArrayAdapter = new EventArrayAdapter(this, mEventList);
         listView.setAdapter(mEventArrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showModifyDialog(mEventList.get(position));
+                showEventDialog(mEventList.get(position));
             }
         });
 
@@ -119,51 +121,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void showEventDialog() {
         final Event event = new Event();
-
-        ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
-        final View dialogView = getLayoutInflater()
-                .inflate(R.layout.dialog_event, dialogRootView);
-        final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
-        Button timeButton = (Button) dialogView.findViewById(R.id.button_time);
-        timeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTimePickerDialog(view, event);
-            }
-        });
-        timeButton.setText(event.getStringDate());
-
-        AlertDialog eventDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_event_dialog)
-                .setView(dialogView)
-                .setCancelable(false)
-                .setNegativeButton(R.string.action_discard, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String eventText = eventEditText.getText().toString();
-                        if (eventText.isEmpty()) {
-                            Toast.makeText(MainActivity.this, R.string.err_input_event,
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            eventText = formatText(eventText);
-                            event.setEvent(eventText);
-                            addEvent(event);
-                            dialog.dismiss();
-                        }
-                    }
-                })
-                .create();
-        eventDialog.show();
+        showEventDialog(event, STATE_ADD_EVENT);
     }
 
-    private void showModifyDialog(final Event event) {
+    private void showEventDialog(final Event event) {
+        showEventDialog(event, STATE_MODIFY_EVENT);
+    }
 
+    private void showEventDialog(final Event event, final int state) {
         ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
         final View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_event, dialogRootView);
@@ -179,8 +144,23 @@ public class MainActivity extends AppCompatActivity {
         });
         timeButton.setText(event.getStringDate());
 
-        AlertDialog eventDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_event_modify)
+        int dialogTitle = 0;
+        int positiveButtonText = 0;
+
+        switch (state) {
+            case STATE_ADD_EVENT:
+                dialogTitle = R.string.title_event_dialog;
+                positiveButtonText = R.string.action_save;
+                break;
+
+            case STATE_MODIFY_EVENT:
+                dialogTitle = R.string.title_event_modify;
+                positiveButtonText = R.string.action_update;
+                break;
+        }
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
+                .setTitle(dialogTitle)
                 .setView(dialogView)
                 .setCancelable(false)
                 .setNeutralButton(R.string.action_discard, new DialogInterface.OnClickListener() {
@@ -189,28 +169,42 @@ public class MainActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(R.string.action_delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showConfirmDeleteDialog(event);
-                    }
-                })
-                .setPositiveButton(R.string.action_update, new DialogInterface.OnClickListener() {
+                .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String eventText = eventEditText.getText().toString();
                         if (eventText.isEmpty()) {
                             Toast.makeText(MainActivity.this, R.string.err_input_event,
                                     Toast.LENGTH_SHORT).show();
-                        } else {
-                            eventText = formatText(eventText);
-                            event.setEvent(eventText);
-                            updateEvent(event);
-                            dialog.dismiss();
+                            return;
                         }
+
+                        eventText = formatText(eventText);
+                        event.setEvent(eventText);
+
+                        switch (state) {
+                            case STATE_ADD_EVENT:
+                                addEvent(event);
+                                break;
+
+                            case STATE_MODIFY_EVENT:
+                                updateEvent(event);
+                                break;
+                        }
+                        dialog.dismiss();
                     }
-                })
-                .create();
+                });
+
+        if (state == STATE_MODIFY_EVENT) {
+            dialogBuilder.setNegativeButton(R.string.action_delete, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showConfirmDeleteDialog(event);
+                }
+            });
+        }
+
+        AlertDialog eventDialog = dialogBuilder.create();
         eventDialog.show();
     }
 
@@ -269,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
     private void addEvent(Event event) {
         mEventList.add(event);
         mEventDbManager.addEvent(event);
-
         updateListView();
     }
 

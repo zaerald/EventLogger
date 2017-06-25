@@ -9,7 +9,7 @@ import java.util.UUID;
 import zero.zd.daily_event_logger.Event;
 import zero.zd.daily_event_logger.database.EventDbSchema.EventTable;
 
-public class EventCursorWrapper extends CursorWrapper {
+class EventCursorWrapper extends CursorWrapper {
 
     public EventCursorWrapper(Cursor cursor) {
         super(cursor);
