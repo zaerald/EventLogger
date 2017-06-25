@@ -8,12 +8,21 @@
         Daily Event Logger v0.1.0\n\nSimple application to create a list of daily events.
     </string>
 
-    <!-- START: Create Event -->
-    <string name="title_event">Create Event</string>
+    <!-- START: Event Dialog -->
+    <string name="title_event_dialog">Create Event</string>
     <string name="hint_event_today">Today\'s Event</string>
     <string name="msg_time">Time:</string>
     <string name="err_input_event">Please input Event</string>
     <string name="action_discard">Discard</string>
+    <string name="action_delete">Delete</string>
     <string name="action_save">Save</string>
+    <string name="action_update">Update</string>
+
+    <!-- START: Confirm Delete Dialog -->
+    <string name="title_delete_dialog">Delete Event</string>
+    <string name="msg_delete">Are you sure you want to delete this event?</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+
 
 </resources>

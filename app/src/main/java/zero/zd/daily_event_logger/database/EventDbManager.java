@@ -72,6 +72,13 @@ public class EventDbManager {
         );
     }
 
+    public void deleteEvent(Event event) {
+        mDatabase.delete(EventTable.NAME,
+                "uuid = ?",
+                new String[] {event.getId().toString()}
+        );
+    }
+
     private ContentValues getContentValues(Event event) {
         ContentValues values = new ContentValues();
         values.put(EventTable.Cols.UUID, event.getId().toString());

@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         timeButton.setText(event.getStringDate());
 
         AlertDialog eventDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_event)
+                .setTitle(R.string.title_event_dialog)
                 .setView(dialogView)
                 .setCancelable(false)
                 .setNegativeButton(R.string.action_discard, new DialogInterface.OnClickListener() {
@@ -180,16 +180,22 @@ public class MainActivity extends AppCompatActivity {
         timeButton.setText(event.getStringDate());
 
         AlertDialog eventDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_event)
+                .setTitle(R.string.title_event_dialog)
                 .setView(dialogView)
                 .setCancelable(false)
-                .setNegativeButton(R.string.action_discard, new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.action_discard, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
-                .setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.action_delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showConfirmDeleteDialog(event);
+                    }
+                })
+                .setPositiveButton(R.string.action_update, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String eventText = eventEditText.getText().toString();
@@ -225,6 +231,26 @@ public class MainActivity extends AppCompatActivity {
         timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
     }
 
+    private void showConfirmDeleteDialog(final Event event) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.title_delete_dialog)
+                .setMessage(R.string.msg_delete)
+                .setPositiveButton(R.string.action_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteEvent(event);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.action_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
     private Date getDateFromTime(int hourOfDay, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -249,6 +275,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateEvent(Event event) {
         mEventDbManager.updateEvent(event);
+        updateListView();
+    }
+
+    private void deleteEvent(Event event) {
+        mEventList.remove(event);
+        mEventDbManager.deleteEvent(event);
         updateListView();
     }
 
