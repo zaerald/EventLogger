@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         timeButton.setText(event.getStringDate());
 
         AlertDialog eventDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_event_dialog)
+                .setTitle(R.string.title_event_modify)
                 .setView(dialogView)
                 .setCancelable(false)
                 .setNeutralButton(R.string.action_discard, new DialogInterface.OnClickListener() {
