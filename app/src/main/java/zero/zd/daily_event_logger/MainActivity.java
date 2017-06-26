@@ -221,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                             timeButton.setText(event.getStringDate());
                         } else {
                             Toast.makeText(MainActivity.this,
-                                    "Please select past or preset time.",
-                                    Toast.LENGTH_SHORT).show();
+                                    "Please select when or the past time of the event created.",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 })
