@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(RadialTimePickerDialogFragment dialog,
                                           int hourOfDay, int minute) {
-                        if (isTimeValid(hourOfDay, minute)) {
+                        if (isTimeValid(event, hourOfDay, minute)) {
                             event.setDate(getDateFromTime(hourOfDay, minute));
                             timeButton.setText(event.getStringDate());
                         } else {
@@ -232,12 +232,22 @@ public class MainActivity extends AppCompatActivity {
         timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
     }
 
-    private boolean isTimeValid(int hourOfDay, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        return hourOfDay < calendar.get(Calendar.HOUR_OF_DAY) ||
-                (hourOfDay == calendar.get(Calendar.HOUR_OF_DAY) &&
-                        minute <= calendar.get(Calendar.MINUTE)
-                );
+    private boolean isTimeValid(Event event, int hourOfDay, int minute) {
+        Date pickedDate = getDateFromTime(hourOfDay, minute);
+        Date eventDate = event.getDate();
+
+        return pickedDate.before(eventDate) ||
+                isTimeOfDateEquals(pickedDate, eventDate);
+    }
+
+    private boolean isTimeOfDateEquals(Date d1, Date d2) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(d1);
+        cal2.setTime(d2);
+
+        return cal1.get(Calendar.HOUR_OF_DAY) == cal2.get(Calendar.HOUR_OF_DAY) &&
+                cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE);
     }
 
     private void showConfirmDeleteDialog(final Event event) {
