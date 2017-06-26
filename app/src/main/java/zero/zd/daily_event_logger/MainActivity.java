@@ -3,6 +3,7 @@ package zero.zd.daily_event_logger;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -132,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
         final View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_event, dialogRootView);
-        final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
+        final EditText eventEditText = dialogView.findViewById(R.id.edit_event);
         eventEditText.setText(event.getEvent());
 
-        Button timeButton = (Button) dialogView.findViewById(R.id.button_time);
+        Button timeButton = dialogView.findViewById(R.id.button_time);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,8 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String eventText = eventEditText.getText().toString();
                         if (eventText.isEmpty()) {
-                            Toast.makeText(MainActivity.this, R.string.err_input_event,
-                                    Toast.LENGTH_SHORT).show();
+                            showSnackBar(R.string.err_input_event);
                             return;
                         }
 
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
                             case STATE_MODIFY_EVENT:
                                 updateEvent(event);
+                                showSnackBar(R.string.msg_event_updated);
                                 break;
                         }
                         dialog.dismiss();
@@ -267,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    private void showSnackBar(int msg) {
+        View rootView = findViewById(R.id.root_main);
+        Snackbar.make(rootView, msg,
+                Snackbar.LENGTH_SHORT).show();
     }
 
     private Date getDateFromTime(int hourOfDay, int minute) {
