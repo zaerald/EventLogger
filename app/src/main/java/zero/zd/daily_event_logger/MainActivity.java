@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -226,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setStartTime(getCurrentHour(), getCurrentMinute())
+                .setStartTime(getCurrentEventHour(event), getCurrentEventMinute(event))
                 .setDoneText("Save")
                 .setCancelText("Discard");
         timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
@@ -277,12 +276,16 @@ public class MainActivity extends AppCompatActivity {
         return calendar.getTime();
     }
 
-    private int getCurrentHour() {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+    private int getCurrentEventHour(Event event) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(event.getDate());
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
-    private int getCurrentMinute() {
-        return Calendar.getInstance().get(Calendar.MINUTE);
+    private int getCurrentEventMinute(Event event) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(event.getDate());
+        return calendar.get(Calendar.MINUTE);
     }
 
     private void addEvent(Event event) {
