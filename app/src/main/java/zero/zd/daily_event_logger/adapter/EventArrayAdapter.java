@@ -3,13 +3,11 @@ package zero.zd.daily_event_logger.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
@@ -53,8 +51,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
             convertView = inflater.inflate(mResource, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.eventTextView = (TextView) convertView.findViewById(R.id.text_event);
-            viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.text_date);
+            viewHolder.eventTextView = convertView.findViewById(R.id.text_event);
+            viewHolder.dateTextView = convertView.findViewById(R.id.text_date);
 
             convertView.setTag(viewHolder);
         } else viewHolder = (ViewHolder) convertView.getTag();

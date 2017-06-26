@@ -133,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
         ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
         final View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_event, dialogRootView);
-        final EditText eventEditText = (EditText) dialogView.findViewById(R.id.edit_event);
+        final EditText eventEditText = dialogView.findViewById(R.id.edit_event);
         eventEditText.setText(event.getEvent());
 
-        Button timeButton = (Button) dialogView.findViewById(R.id.button_time);
+        Button timeButton = dialogView.findViewById(R.id.button_time);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
