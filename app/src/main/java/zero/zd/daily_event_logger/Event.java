@@ -37,12 +37,13 @@ public class Event {
         return mDate;
     }
 
+    public void setDate(Date date) {
+        mDate = date;
+    }
+
     public String getStringDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a  E, MMMM dd, yy", Locale.ENGLISH);
         return simpleDateFormat.format(mDate);
     }
 
-    public void setDate(Date date) {
-        mDate = date;
-    }
 }
