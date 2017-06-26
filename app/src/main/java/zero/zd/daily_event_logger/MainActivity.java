@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,14 +216,28 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(RadialTimePickerDialogFragment dialog,
                                           int hourOfDay, int minute) {
-                        event.setDate(getDateFromTime(hourOfDay, minute));
-                        timeButton.setText(event.getStringDate());
+                        if (isTimeValid(hourOfDay, minute)) {
+                            event.setDate(getDateFromTime(hourOfDay, minute));
+                            timeButton.setText(event.getStringDate());
+                        } else {
+                            Toast.makeText(MainActivity.this,
+                                    "Please select past or preset time.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setStartTime(getCurrentHour(), getCurrentMinute())
                 .setDoneText("Save")
                 .setCancelText("Discard");
         timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
+    }
+
+    private boolean isTimeValid(int hourOfDay, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        return hourOfDay < calendar.get(Calendar.HOUR_OF_DAY) ||
+                (hourOfDay == calendar.get(Calendar.HOUR_OF_DAY) &&
+                        minute <= calendar.get(Calendar.MINUTE)
+                );
     }
 
     private void showConfirmDeleteDialog(final Event event) {
