@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import zero.zd.daily_event_logger.Event;
 import zero.zd.daily_event_logger.R;
 
@@ -50,10 +52,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                     mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(mResource, parent, false);
 
-            viewHolder = new ViewHolder();
-            viewHolder.eventTextView = convertView.findViewById(R.id.text_event);
-            viewHolder.dateTextView = convertView.findViewById(R.id.text_date);
-
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else viewHolder = (ViewHolder) convertView.getTag();
 
@@ -86,8 +85,14 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         return noun + " ago.";
     }
 
-    private static class ViewHolder {
-        private TextView eventTextView;
-        private TextView dateTextView;
+    static class ViewHolder {
+        @BindView(R.id.text_event)
+        TextView eventTextView;
+        @BindView(R.id.text_date)
+        TextView dateTextView;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }
