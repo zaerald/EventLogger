@@ -1,4 +1,4 @@
-package zero.zd.daily_event_logger.adapter;
+package zero.zd.eventlogger.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,8 +14,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import zero.zd.daily_event_logger.Event;
-import zero.zd.daily_event_logger.R;
+import zero.zd.eventlogger.Event;
+import zero.zd.eventlogger.R;
 
 public class EventArrayAdapter extends ArrayAdapter<Event> {
 
