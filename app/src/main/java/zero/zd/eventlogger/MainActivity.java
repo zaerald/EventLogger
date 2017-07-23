@@ -136,6 +136,15 @@ public class MainActivity extends AppCompatActivity {
         final EditText eventEditText = dialogView.findViewById(R.id.edit_event);
         eventEditText.setText(event.getEvent());
 
+        Button dateButton = dialogView.findViewById(R.id.button_date);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(view, event);
+            }
+        });
+        dateButton.setText(event.getStringDate());
+
         Button timeButton = dialogView.findViewById(R.id.button_time);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 showTimePickerDialog(view, event);
             }
         });
-        timeButton.setText(event.getStringDate());
+        timeButton.setText(event.getStringTime());
 
         int dialogTitle = 0;
         int positiveButtonText = 0;
@@ -209,6 +218,10 @@ public class MainActivity extends AppCompatActivity {
         eventDialog.show();
     }
 
+    private void showDatePickerDialog(View view, final Event event) {
+
+    }
+
     private void showTimePickerDialog(View view, final Event event) {
         final Button timeButton = (Button) view;
         RadialTimePickerDialogFragment timePickerDialog = new RadialTimePickerDialogFragment()
@@ -218,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                                           int hourOfDay, int minute) {
                         if (isTimeValid(event, hourOfDay, minute)) {
                             event.setDate(getDateFromTime(hourOfDay, minute));
-                            timeButton.setText(event.getStringDate());
+                            timeButton.setText(event.getStringTime());
                         } else {
                             Toast.makeText(MainActivity.this,
                                     "Please select when or the past time of the event created.",
