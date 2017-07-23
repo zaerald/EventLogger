@@ -1,4 +1,4 @@
-package zero.zd.daily_event_logger.database;
+package zero.zd.eventlogger.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import zero.zd.daily_event_logger.Event;
-import zero.zd.daily_event_logger.database.EventDbSchema.EventTable;
+import zero.zd.eventlogger.Event;
+import zero.zd.eventlogger.database.EventDbSchema.EventTable;
 
 public class EventDbManager {
 

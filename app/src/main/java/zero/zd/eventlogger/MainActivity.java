@@ -1,4 +1,4 @@
-package zero.zd.daily_event_logger;
+package zero.zd.eventlogger;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -27,8 +27,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import zero.zd.daily_event_logger.adapter.EventArrayAdapter;
-import zero.zd.daily_event_logger.database.EventDbManager;
+import zero.zd.eventlogger.adapter.EventArrayAdapter;
+import zero.zd.eventlogger.database.EventDbManager;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name">Daily Event Logger</string>
+    <string name="app_name">Event Logger</string>
 
     <!-- START: Application Info -->
     <string name="title_info">About</string>
     <string name="action_about">About</string>
     <string name="msg_info">
-        Daily Event Logger v0.2.3\n\nSimple application to create a list of daily events.
+        Event Logger v0.2.3\n\nSimple application to create a list of daily events.
     </string>
 
     <!-- START: Create Event Dialog -->
     <string name="title_event_dialog">Create Event</string>
-    <string name="hint_event_today">Today\'s Event</string>
+    <string name="hint_event_today">Name of the Event</string>
     <string name="msg_time">Time:</string>
     <string name="err_input_event">Please input Event\'s name.</string>
     <string name="action_discard">Discard</string>

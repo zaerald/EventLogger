@@ -1,4 +1,4 @@
-package zero.zd.daily_event_logger.database;
+package zero.zd.eventlogger.database;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
@@ -6,8 +6,8 @@ import android.database.CursorWrapper;
 import java.util.Date;
 import java.util.UUID;
 
-import zero.zd.daily_event_logger.Event;
-import zero.zd.daily_event_logger.database.EventDbSchema.EventTable;
+import zero.zd.eventlogger.Event;
+import zero.zd.eventlogger.database.EventDbSchema.EventTable;
 
 class EventCursorWrapper extends CursorWrapper {
 

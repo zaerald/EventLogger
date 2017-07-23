@@ -1,4 +1,4 @@
-package zero.zd.daily_event_logger;
+package zero.zd.eventlogger;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

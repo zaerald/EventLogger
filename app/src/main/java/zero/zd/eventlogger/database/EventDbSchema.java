@@ -1,4 +1,4 @@
-package zero.zd.daily_event_logger.database;
+package zero.zd.eventlogger.database;
 
 class EventDbSchema {
 
