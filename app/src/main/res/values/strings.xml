@@ -12,6 +12,7 @@
     <string name="title_event_dialog">Create Event</string>
     <string name="hint_event_today">Name of the Event</string>
     <string name="msg_time">Time:</string>
+    <string name="msg_date">Date:</string>
     <string name="err_input_event">Please input Event\'s name.</string>
     <string name="action_discard">Discard</string>
     <string name="action_save">Save</string>
