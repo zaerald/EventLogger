@@ -1,2 +1,2 @@
-# Daily Event Logger
-Simple application to create a list of daily events.
+# Event Logger
+Simple application to create a list of events.
