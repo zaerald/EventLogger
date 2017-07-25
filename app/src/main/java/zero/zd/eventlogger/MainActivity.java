@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import zero.zd.eventlogger.database.EventDbManager;
 public class MainActivity extends AppCompatActivity {
 
     private static final String FRAG_TAG_TIME_PICKER = "FRAG_TAG_TIME_PICKER";
+    private static final String FRAG_TAG_DATE_PICKER = "FRAG_TAG_DATE_PICKER";
     private static final int STATE_ADD_EVENT = 0;
     private static final int STATE_MODIFY_EVENT = 1;
 
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(mEventList, new Comparator<Event>() {
             @Override
             public int compare(Event o1, Event o2) {
-                return o2.getDate().compareTo(o1.getDate());
+                return o1.getDate().compareTo(o2.getDate());
             }
         });
     }
@@ -136,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
         final EditText eventEditText = dialogView.findViewById(R.id.edit_event);
         eventEditText.setText(event.getEvent());
 
+        Button dateButton = dialogView.findViewById(R.id.button_date);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(view, event);
+            }
+        });
+        dateButton.setText(event.getStringDate());
+
         Button timeButton = dialogView.findViewById(R.id.button_time);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 showTimePickerDialog(view, event);
             }
         });
-        timeButton.setText(event.getStringDate());
+        timeButton.setText(event.getStringTime());
 
         int dialogTitle = 0;
         int positiveButtonText = 0;
@@ -209,6 +220,35 @@ public class MainActivity extends AppCompatActivity {
         eventDialog.show();
     }
 
+    private void showDatePickerDialog(View view, final Event event) {
+        final Button dateButton = (Button) view;
+        CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
+                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                        if (isDateValid(year, monthOfYear, dayOfMonth)) {
+                            event.setDate(getDateFromDatePicker(year, monthOfYear, dayOfMonth));
+                            dateButton.setText(event.getStringDate());
+                        } else {
+                            Toast.makeText(MainActivity.this,
+                                    getString(R.string.msg_error_time_date_input),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setDoneText("Save")
+                .setCancelText("Discard");
+        cdp.show(getSupportFragmentManager(), FRAG_TAG_DATE_PICKER);
+    }
+
+    private boolean isDateValid(int year, int monthOfYear, int dayOfMonth) {
+        Calendar pickedCalendar = Calendar.getInstance();
+        pickedCalendar.set(year, monthOfYear, dayOfMonth);
+
+        return pickedCalendar.compareTo(Calendar.getInstance()) <= 0;
+    }
+
     private void showTimePickerDialog(View view, final Event event) {
         final Button timeButton = (Button) view;
         RadialTimePickerDialogFragment timePickerDialog = new RadialTimePickerDialogFragment()
@@ -216,12 +256,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(RadialTimePickerDialogFragment dialog,
                                           int hourOfDay, int minute) {
-                        if (isTimeValid(event, hourOfDay, minute)) {
-                            event.setDate(getDateFromTime(hourOfDay, minute));
-                            timeButton.setText(event.getStringDate());
+                        if (isTimeValid(event, hourOfDay, minute) ) {
+                            event.setDate(getDateFromTimePicker(hourOfDay, minute));
+                            timeButton.setText(event.getStringTime());
                         } else {
                             Toast.makeText(MainActivity.this,
-                                    "Please select when or the past time of the event created.",
+                                    getString(R.string.msg_error_time_date_input),
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -233,21 +273,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isTimeValid(Event event, int hourOfDay, int minute) {
-        Date pickedDate = getDateFromTime(hourOfDay, minute);
-        Date eventDate = event.getDate();
+        Calendar pickedCalendar = Calendar.getInstance();
+        pickedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        pickedCalendar.set(Calendar.MINUTE, minute);
 
-        return pickedDate.before(eventDate) ||
-                isTimeOfDateEquals(pickedDate, eventDate);
+        return pickedCalendar.compareTo(Calendar.getInstance()) <= 0 ||
+                isDateBefore(event);
     }
 
-    private boolean isTimeOfDateEquals(Date d1, Date d2) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(d1);
-        cal2.setTime(d2);
+    private boolean isDateBefore(Event event) {
+        Calendar pickedCalendar = Calendar.getInstance();
+        pickedCalendar.setTime(event.getDate());
 
-        return cal1.get(Calendar.HOUR_OF_DAY) == cal2.get(Calendar.HOUR_OF_DAY) &&
-                cal1.get(Calendar.MINUTE) == cal2.get(Calendar.MINUTE);
+        return pickedCalendar.compareTo(Calendar.getInstance()) < 0;
     }
 
     private void showConfirmDeleteDialog(final Event event) {
@@ -276,7 +314,13 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.LENGTH_SHORT).show();
     }
 
-    private Date getDateFromTime(int hourOfDay, int minute) {
+    private Date getDateFromDatePicker(int year, int monthOfYear, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth);
+        return calendar.getTime();
+    }
+
+    private Date getDateFromTimePicker(int hourOfDay, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);

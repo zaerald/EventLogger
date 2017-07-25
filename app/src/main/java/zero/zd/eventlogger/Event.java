@@ -42,8 +42,12 @@ public class Event {
     }
 
     public String getStringDate() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a  E, MMMM dd, yy", Locale.ENGLISH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMMM dd, yyyy", Locale.ENGLISH);
         return simpleDateFormat.format(mDate);
     }
 
+    public String getStringTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
+        return simpleDateFormat.format(mDate);
+    }
 }

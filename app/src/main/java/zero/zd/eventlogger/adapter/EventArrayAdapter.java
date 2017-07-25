@@ -65,13 +65,13 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
     }
 
     private String getStringDate(Event event) {
-        long timeDifference = (new Date().getTime()) - event.getDate().getTime();
+        long timeDifference = (event.getDate().getTime() - (new Date().getTime()));
         int s = (int) timeDifference / 1000;
         int m = s / 60;
         int h = m / 60;
 
         if (h >= 24)
-            return event.getStringDate();
+            return event.getStringTime() + " " + event.getStringDate();
         else if (h > 0)
             return h + " " + getProperTimeForm("hr", h);
         else if (m > 0)
