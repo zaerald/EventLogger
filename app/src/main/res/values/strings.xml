@@ -7,6 +7,7 @@
     <string name="msg_info">
         Event Logger v0.2.3\n\nSimple application to create a list of daily events.
     </string>
+    <string name="msg_error_time_date_input">Please select a Time and Date on or before the event happened</string>
 
     <!-- START: Create Event Dialog -->
     <string name="title_event_dialog">Create Event</string>
