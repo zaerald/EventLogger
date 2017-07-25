@@ -71,7 +71,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         int h = m / 60;
 
         if (h >= 24)
-            return event.getStringTime();
+            return event.getStringTime() + " " + event.getStringDate();
         else if (h > 0)
             return h + " " + getProperTimeForm("hr", h);
         else if (m > 0)
