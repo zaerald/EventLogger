@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         mEventList = mEventDbManager.getEventList();
 
         ListView listView = (ListView) findViewById(R.id.list_event);
+        listView.setEmptyView(findViewById(R.id.text_empty_list));
         mEventArrayAdapter = new EventArrayAdapter(this, mEventList);
         listView.setAdapter(mEventArrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
