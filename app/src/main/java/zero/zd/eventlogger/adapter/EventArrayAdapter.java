@@ -65,7 +65,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
     }
 
     private String getStringDate(Event event) {
-        long timeDifference = (event.getDate().getTime() - (new Date().getTime()));
+        long timeDifference = (new Date().getTime()) - event.getDate().getTime();
         int s = (int) timeDifference / 1000;
         int m = s / 60;
         int h = m / 60;
