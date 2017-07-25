@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(mEventList, new Comparator<Event>() {
             @Override
             public int compare(Event o1, Event o2) {
-                return o2.getDate().compareTo(o1.getDate());
+                return o1.getDate().compareTo(o2.getDate());
             }
         });
     }
