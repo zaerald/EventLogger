@@ -237,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 })
+                .setPreselectedDate(getEventYear(event), getEventMonth(event), getEventDay(event))
                 .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setDoneText("Save")
                 .setCancelText("Discard");
@@ -268,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setStartTime(getCurrentEventHour(event), getCurrentEventMinute(event))
+                .setStartTime(getEventHour(event), getEventMinute(event))
                 .setDoneText("Save")
                 .setCancelText("Discard");
         timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
@@ -324,16 +325,30 @@ public class MainActivity extends AppCompatActivity {
         return calendar.getTime();
     }
 
-    private int getCurrentEventHour(Event event) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(event.getDate());
-        return calendar.get(Calendar.HOUR_OF_DAY);
+    private int getEventYear(Event event) {
+        return getCalendarFromEvent(event).get(Calendar.YEAR);
     }
 
-    private int getCurrentEventMinute(Event event) {
+    private int getEventMonth(Event event) {
+        return getCalendarFromEvent(event).get(Calendar.MONTH);
+    }
+
+    private int getEventDay(Event event) {
+        return getCalendarFromEvent(event).get(Calendar.DAY_OF_MONTH);
+    }
+
+    private int getEventHour(Event event) {
+        return getCalendarFromEvent(event).get(Calendar.HOUR_OF_DAY);
+    }
+
+    private int getEventMinute(Event event) {
+        return getCalendarFromEvent(event).get(Calendar.MINUTE);
+    }
+
+    private Calendar getCalendarFromEvent(Event event) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(event.getDate());
-        return calendar.get(Calendar.MINUTE);
+        return calendar;
     }
 
     private void addEvent(Event event) {
