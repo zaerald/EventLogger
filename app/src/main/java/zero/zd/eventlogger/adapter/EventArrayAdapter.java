@@ -19,9 +19,9 @@ import zero.zd.eventlogger.R;
 
 public class EventArrayAdapter extends ArrayAdapter<Event> {
 
-    private Context mContext;
-    private int mResource;
-    private List<Event> mEventList;
+    private final Context mContext;
+    private final int mResource;
+    private final List<Event> mEventList;
 
     public EventArrayAdapter(Context context, List<Event> eventList) {
         super(context, R.layout.item_event, eventList);

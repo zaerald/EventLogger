@@ -11,5 +11,4 @@ class EventDbSchema {
             public static final String DATE = "date";
         }
     }
-
 }

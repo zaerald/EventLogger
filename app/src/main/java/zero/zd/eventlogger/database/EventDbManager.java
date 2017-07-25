@@ -14,7 +14,7 @@ import zero.zd.eventlogger.database.EventDbSchema.EventTable;
 
 public class EventDbManager {
 
-    private Context mContext;
+    private final Context mContext;
     private SQLiteDatabase mDatabase;
     private EventSQLiteOpenHelper mDbHelper;
 
@@ -22,10 +22,9 @@ public class EventDbManager {
         mContext = context;
     }
 
-    public EventDbManager open() throws SQLException {
+    public void open() throws SQLException {
         mDbHelper = new EventSQLiteOpenHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
-        return this;
     }
 
     public List<Event> getEventList() {

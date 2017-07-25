@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int STATE_ADD_EVENT = 0;
     private static final int STATE_MODIFY_EVENT = 1;
 
-    ArrayAdapter<Event> mEventArrayAdapter;
+    private ArrayAdapter<Event> mEventArrayAdapter;
     private List<Event> mEventList;
     private EventDbManager mEventDbManager;
 

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Event {
 
-    private UUID mId;
+    private final UUID mId;
     private String mEvent;
     private Date mDate;
 
