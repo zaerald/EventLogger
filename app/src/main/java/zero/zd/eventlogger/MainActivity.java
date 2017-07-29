@@ -1,6 +1,7 @@
 package zero.zd.eventlogger;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -86,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
                 showEventDialog(mEventList.get(position));
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Event event = (Event) adapterView.getItemAtPosition(i);
+                shareEvent(event);
+                return true;
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +103,16 @@ public class MainActivity extends AppCompatActivity {
                 showEventDialog();
             }
         });
+    }
+
+    public void shareEvent(Event event) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        intent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.msg_share_event),
+                event.getEvent(), event.getStringDate(), event.getStringTime()));
+        intent = Intent.createChooser(intent, getString(R.string.title_share_event));
+        startActivity(intent);
     }
 
     private void updateListView() {
