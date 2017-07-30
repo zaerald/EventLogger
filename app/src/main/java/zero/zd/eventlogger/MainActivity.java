@@ -16,7 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
@@ -87,14 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 showEventDialog(mEventList.get(position));
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Event event = (Event) adapterView.getItemAtPosition(i);
-                shareEvent(event);
-                return true;
-            }
-        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -153,12 +147,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void showEventDialog(final Event event, final int state) {
         ViewGroup dialogRootView = (ViewGroup) findViewById(R.id.root_dialog_create_event);
+        final View dialogTitleView = getLayoutInflater()
+                .inflate(R.layout.dialog_title_event, dialogRootView);
+        TextView dialogTitleText = dialogTitleView.findViewById(R.id.text_title);
+        ImageView dialogShareImage = dialogTitleView.findViewById(R.id.image_share);
+
         final View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_event, dialogRootView);
         final EditText eventEditText = dialogView.findViewById(R.id.edit_event);
         eventEditText.setText(event.getEvent());
-
         Button dateButton = dialogView.findViewById(R.id.button_date);
+        Button timeButton = dialogView.findViewById(R.id.button_time);
+
+        int dialogTitle = 0;
+        int positiveButtonText = 0;
+
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
         });
         dateButton.setText(event.getStringDate());
 
-        Button timeButton = dialogView.findViewById(R.id.button_time);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,23 +178,29 @@ public class MainActivity extends AppCompatActivity {
         });
         timeButton.setText(event.getStringTime());
 
-        int dialogTitle = 0;
-        int positiveButtonText = 0;
-
         switch (state) {
             case STATE_ADD_EVENT:
                 dialogTitle = R.string.title_event_dialog;
                 positiveButtonText = R.string.action_save;
+                dialogShareImage.setVisibility(View.GONE);
                 break;
 
             case STATE_MODIFY_EVENT:
                 dialogTitle = R.string.title_event_modify;
                 positiveButtonText = R.string.action_update;
+                dialogShareImage.setVisibility(View.VISIBLE);
                 break;
         }
+        dialogTitleText.setText(dialogTitle);
+        dialogShareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareEvent(event);
+            }
+        });
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
-                .setTitle(dialogTitle)
+                .setCustomTitle(dialogTitleView)
                 .setView(dialogView)
                 .setCancelable(false)
                 .setNeutralButton(R.string.action_discard, new DialogInterface.OnClickListener() {
