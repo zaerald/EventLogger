@@ -89,14 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 showEventDialog(mEventList.get(position));
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Event event = (Event) adapterView.getItemAtPosition(i);
-                shareEvent(event);
-                return true;
-            }
-        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
