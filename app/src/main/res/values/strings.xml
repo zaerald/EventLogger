@@ -12,6 +12,10 @@
     <string name="title_share_event">Choose to Share your Event</string>
     <string name="msg_share_event">%1$s on %2$s at %3$s</string>
 
+    <!-- START: Main Search -->
+    <string name="searchable">Searchable</string>
+    <string name="action_search">Search</string>
+
     <!-- START: Create Event Dialog -->
     <string name="title_event_dialog">Create Event</string>
     <string name="hint_event_today">Name of the Event</string>
