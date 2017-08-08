@@ -1,14 +1,19 @@
 <resources>
     <string name="app_name">Event Logger</string>
 
+    <string name="msg_no_event">No Events.\nTap the plus (+) icon to create a new Event.</string>
+    <string name="msg_error_time_date_input">Please select a Time and Date on or before the event happened</string>
+
+    <!-- START: Share-->
+    <string name="title_share_event">Choose to Share your Event</string>
+    <string name="msg_share_event">%1$s on %2$s at %3$s</string>
+
     <!-- START: Application Info -->
     <string name="title_info">About</string>
     <string name="action_about">About</string>
     <string name="msg_info">
-        Event Logger v0.2.5\n\nSimple application to create a list of daily events.
+        Event Logger v0.2.7\n\nSimple application to create a list of daily events.
     </string>
-    <string name="msg_no_event">No Events.\nTap the plus (+) icon to create a new Event.</string>
-    <string name="msg_error_time_date_input">Please select a Time and Date on or before the event happened</string>
 
     <!-- START: Create Event Dialog -->
     <string name="title_event_dialog">Create Event</string>
