@@ -69,20 +69,27 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         long second = timeDifference / 1000;
         long minute = second / 60;
         long hour = minute / 60;
+        long day = hour / 24;
+        long week = day / 7;
 
-        if (hour >= 24)
-            return event.getStringTime() + " " + event.getStringDate();
-        else if (hour > 0)
-            return hour + " " + getProperTimeForm("hr", hour);
-        else if (minute > 0)
-            return minute + " " + getProperTimeForm("min", minute);
+        String dateString = "";
+        if (week > 0 && week < 4) dateString += getTimeDisplay("week", week);
+        else if (day > 1 && day < 21) dateString += getTimeDisplay("day", day);
+        else if (hour > 0 && day == 0) dateString += getTimeDisplay("hr", hour);
+        else if (minute > 0 && hour == 0) dateString += getTimeDisplay("min", minute);
+        else if (minute == 0) dateString += "a few seconds ago.";
+        else dateString += event.getStringTime() + " " + event.getStringDate();
 
-        return "a few seconds ago.";
+        return dateString;
+    }
+
+    private String getTimeDisplay(String noun, long value) {
+        return value + " " + getProperTimeForm(noun, value) + " ago.";
     }
 
     private String getProperTimeForm(String noun, long value) {
         if (value > 1) noun += "s";
-        return noun + " ago.";
+        return noun;
     }
 
     static class ViewHolder {
