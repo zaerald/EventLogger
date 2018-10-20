@@ -72,15 +72,12 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         long day = hour / 24;
         long week = day / 7;
 
-        String dateString = "";
-        if (week > 0 && week < 4) dateString += getTimeDisplay("week", week);
-        else if (day > 1 && day < 21) dateString += getTimeDisplay("day", day);
-        else if (hour > 0 && day == 0) dateString += getTimeDisplay("hr", hour);
-        else if (minute > 0 && hour == 0) dateString += getTimeDisplay("min", minute);
-        else if (minute == 0) dateString += "a few seconds ago.";
-        else dateString += event.getStringTime() + " " + event.getStringDate();
-
-        return dateString;
+        return (week > 0 && week < 4) ? getTimeDisplay("week", week): 
+                (day > 1 && day < 21) ? getTimeDisplay("day", day):
+                (hour > 0 && day == 0) ? getTimeDisplay("hr", hour):
+                (minute > 0 && hour == 0) ? getTimeDisplay("min", minute):
+                (minute == 0) ? "a few seconds ago.":
+                event.getStringTime() + " " + event.getStringDate();
     }
 
     private String getTimeDisplay(String noun, long value) {
